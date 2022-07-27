@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import fs from "fs-extra";
+//@ts-ignore next-line
 import { addFrame } from "@edward1993/img-editor/dist/lib/imgEditor";
 
 // how to receive a file https://github.com/vercel/micro/issues/434
