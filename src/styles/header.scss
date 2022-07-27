@@ -1,0 +1,20 @@
+@import "./colors.scss";
+
+.ieo-app-header {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+
+  width: 100%;
+  color: $text-color-light;
+  // min-height: 8vh;
+
+  box-shadow: 0px -2px 4px #8f8f8f;
+
+  letter-spacing: 0.1em;
+  word-spacing: 1em;
+
+  text-transform: uppercase;
+  background-color: $secondary-color;
+}

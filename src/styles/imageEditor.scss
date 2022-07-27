@@ -1,0 +1,83 @@
+@import "./colors.scss";
+
+$border-color: #222222;
+
+// #region mixins
+@mixin image-container {
+  display: flex;
+  padding: 0.3em;
+}
+
+@mixin title {
+  display: flex;
+  justify-content: center;
+
+  font-size: 2rem;
+
+  padding: 0.5rem 0;
+}
+// #endregion
+
+.ieo-image-editor-wrapper {
+  padding: 0.5em;
+
+  & .ieo-image-editor-images-area-wrapper {
+    display: flex;
+
+    justify-content: center;
+    height: 95vh;
+
+    & .ieo-image-editor-original-image-content {
+      @include image-container;
+      flex: 1;
+      flex-direction: column;
+
+      border-right: 0.1rem dashed $border-color;
+
+      & .ieo-image-editor-title {
+        @include title;
+      }
+
+      & .ieo-image-editor-original-actions {
+        display: flex;
+        justify-content: center;
+
+        padding: 0.5rem 0;
+      }
+
+      & .ieo-image-editor-original-details {
+        display: flex;
+        justify-content: center;
+
+        padding: 0.5rem 0;
+        border-top: 0.1rem solid $border-color;
+        word-break: break-all;
+      }
+
+      & .ieo-image-editor-original-preview {
+        display: flex;
+        justify-content: center;
+
+        padding: 1rem 5rem;
+
+        background-color: $secondary-color;
+
+        & img {
+          display: flex;
+          width: 100%;
+        }
+      }
+    }
+
+    & .ieo-image-editor-edited-image-content {
+      @include image-container;
+      justify-content: center;
+
+      flex: 2;
+
+      & .ieo-image-editor-title {
+        @include title;
+      }
+    }
+  }
+}
