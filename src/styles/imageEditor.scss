@@ -71,12 +71,42 @@ $border-color: #222222;
 
     & .ieo-image-editor-edited-image-content {
       @include image-container;
-      justify-content: center;
 
       flex: 2;
+      flex-direction: column;
 
       & .ieo-image-editor-title {
         @include title;
+      }
+
+      & .ieo-image-editor-final-actions {
+        display: flex;
+        justify-content: center;
+
+        padding: 0.5rem 0;
+      }
+
+      & .ieo-image-editor-final-details {
+        display: flex;
+        justify-content: center;
+
+        padding: 0.5rem 0;
+        border-top: 0.1rem solid $border-color;
+        word-break: break-all;
+      }
+
+      & .ieo-image-editor-final-preview {
+        display: flex;
+        justify-content: center;
+
+        padding: 1rem 5rem;
+
+        background-color: $secondary-color;
+
+        & img {
+          display: flex;
+          width: 100%;
+        }
       }
     }
   }
