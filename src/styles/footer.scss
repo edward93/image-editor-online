@@ -1,0 +1,46 @@
+@import "./colors.scss";
+
+.ieo-footer-container {
+  display: flex;
+
+  padding: 0.3em 1em 1em 1em;
+  background-color: #000;
+  justify-content: flex-end;
+  color: white;
+
+  box-shadow: 0px -2px 4px #272727;
+
+  flex-wrap: wrap;
+
+  & .ieo-footer-app-info {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+
+    margin: 1rem 0rem;
+
+    align-items: flex-end;
+
+    & .ieo-logo-first-letter {
+      color: $red-color;
+    }
+  }
+
+  & .ieo-footer-credits {
+    font-size: small;
+    display: flex;
+    width: 100%;
+    margin: 1rem 0rem;
+    flex-wrap: wrap;
+
+    & .ieo-footer-section-title {
+      width: 100%;
+      font-size: large;
+    }
+
+    & a {
+      color: $text-color-light;
+      text-decoration: underline;
+    }
+  }
+}

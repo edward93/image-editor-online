@@ -198,7 +198,16 @@ const ImageEditorComponent = () => {
           {selectedFile && (
             <>
               <div className="ieo-image-editor-original-details">
-                {`Resolution ${selectedFile.height} x ${selectedFile.width} Name: ${selectedFile.name}`}
+                <div className="ieo-image-editor-img-properties">
+                  <label>Resolution</label>
+                  <div>
+                    {selectedFile.height} x {selectedFile.width}
+                  </div>
+                </div>
+                <div className="ieo-image-editor-img-properties">
+                  <label>Name</label>
+                  <div>{selectedFile.name}</div>
+                </div>
               </div>
               <div className="ieo-image-editor-original-preview">
                 <img
