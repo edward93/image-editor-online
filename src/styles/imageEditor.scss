@@ -25,7 +25,7 @@ $border-color: #222222;
     display: flex;
 
     justify-content: center;
-    height: 95vh;
+    min-height: 95vh;
 
     & .ieo-image-editor-original-image-content {
       @include image-container;
@@ -60,7 +60,7 @@ $border-color: #222222;
 
         padding: 1rem 5rem;
 
-        background-color: $secondary-color;
+        // background-color: $secondary-color;
 
         & img {
           display: flex;
@@ -86,6 +86,33 @@ $border-color: #222222;
         padding: 0.5rem 0;
       }
 
+      & .ieo-image-editor-final-params {
+        display: flex;
+        justify-content: center;
+
+        & > input {
+          background-color: rgba($color: #ffffff, $alpha: 0);
+          color: $text-color-light;
+
+          height: 2rem;
+
+          border-style: solid;
+          border-radius: 5pt;
+          border-color: $text-color-light;
+
+          padding: 0.5rem 1rem;
+          margin: 0.5rem 1rem;
+        }
+      }
+
+      & .ieo-image-editor-final-spinner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        height: 100%;
+      }
+
       & .ieo-image-editor-final-details {
         display: flex;
         justify-content: center;
@@ -101,7 +128,7 @@ $border-color: #222222;
 
         padding: 1rem 5rem;
 
-        background-color: $secondary-color;
+        // background-color: $secondary-color;
 
         & img {
           display: flex;

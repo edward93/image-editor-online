@@ -1,6 +1,7 @@
 import { PhotoCamera } from "@mui/icons-material";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
-import { Button, IconButton } from "@mui/material";
+import { Button, CircularProgress, IconButton } from "@mui/material";
+
 import { ChangeEvent, SyntheticEvent, useState } from "react";
 import { post } from "../services/httpClient";
 import { Buffer } from "buffer";
@@ -20,6 +21,15 @@ type FileInfo = {
 const ImageEditorComponent = () => {
   const [selectedFile, setSelectedFile] = useState<FileInfo | null>(null);
   const [finalFile, setFinalFile] = useState<FileInfo | null>(null);
+  const [processing, setProcessing] = useState<boolean>(false);
+  const [imgParams, setImgParams] = useState<
+    | {
+        paperWidth?: string;
+        paperHeight?: string;
+        color?: string;
+      }
+    | undefined
+  >(undefined);
 
   //#region original image
   /**
@@ -76,12 +86,14 @@ const ImageEditorComponent = () => {
    * @param event - Click event
    */
   const onProcessClick = async (event: any) => {
+    setProcessing(true);
+
     const formData = new FormData();
     if (selectedFile) formData.append("file", selectedFile?.file);
     else throw Error("No file was uploaded");
 
     // add frame
-    const result = await post("api/frame", undefined, formData);
+    const result = await post("api/frame", imgParams, undefined, formData);
 
     // update the state
     const blob = new Blob([Buffer.from(result.data[0], "base64")], {
@@ -96,6 +108,7 @@ const ImageEditorComponent = () => {
     };
 
     setFinalFile(file);
+    setProcessing(false);
   };
 
   /**
@@ -121,6 +134,28 @@ const ImageEditorComponent = () => {
   };
   //#endregion
 
+  //#region image params
+  const onPaperWidthChange = (event: any) => {
+    const value = event.target.value;
+
+    const param = { ...imgParams, paperWidth: value };
+    setImgParams(param);
+  };
+
+  const onPaperHeightChange = (event: any) => {
+    const value = event.target.value;
+
+    const param = { ...imgParams, paperHeight: value };
+    setImgParams(param);
+  };
+
+  const onColorChange = (event: any) => {
+    const value = event.target.value;
+
+    const param = { ...imgParams, color: value };
+    setImgParams(param);
+  };
+  //#endregion
   return (
     <div className="ieo-image-editor-wrapper">
       <div className="ieo-image-editor-images-area-wrapper">
@@ -185,6 +220,7 @@ const ImageEditorComponent = () => {
               component="label"
               size="large"
               color="inherit"
+              disabled={processing}
               onClick={onProcessClick}
             >
               Process
@@ -194,25 +230,49 @@ const ImageEditorComponent = () => {
               component="label"
               size="large"
               color="inherit"
+              disabled={processing}
               onClick={onProcessClick}
             >
               <PlayCircleOutlineIcon />
             </IconButton>
           </div>
-          {finalFile && (
-            <>
-              <div className="ieo-image-editor-final-details">
-                {`Resolution ${finalFile.height} x ${finalFile.width}`}
-              </div>
-              <div className="ieo-image-editor-final-preview">
-                <img
-                  src={finalFile.preview}
-                  alt="Final"
-                  className="ieo-image-editor-final-img"
-                  onLoad={finalImageLoaded}
-                />
-              </div>
-            </>
+          <div className="ieo-image-editor-final-params">
+            <input
+              placeholder="Paper Width"
+              value={imgParams?.paperWidth}
+              onChange={onPaperWidthChange}
+            />
+            <input
+              placeholder="Paper Height"
+              value={imgParams?.paperHeight}
+              onChange={onPaperHeightChange}
+            />
+            <input
+              placeholder="Color"
+              value={imgParams?.color}
+              onChange={onColorChange}
+            />
+          </div>
+          {processing ? (
+            <div className="ieo-image-editor-final-spinner">
+              <CircularProgress color="inherit" />
+            </div>
+          ) : (
+            finalFile && (
+              <>
+                <div className="ieo-image-editor-final-details">
+                  {`Resolution ${finalFile.height} x ${finalFile.width}`}
+                </div>
+                <div className="ieo-image-editor-final-preview">
+                  <img
+                    src={finalFile.preview}
+                    alt="Final"
+                    className="ieo-image-editor-final-img"
+                    onLoad={finalImageLoaded}
+                  />
+                </div>
+              </>
+            )
           )}
         </div>
       </div>
