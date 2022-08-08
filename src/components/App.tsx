@@ -6,13 +6,17 @@ import ImageEditor from "./Image.Editor.Component";
 
 import Footer from "./Footer.Component";
 
-ReactGA.initialize("G-FHPMY22TTL");
+ReactGA.initialize("G-FHPMY22TTL", {
+  debug: true,
+  titleCase: false,
+});
 
 function App() {
   useEffect(() => {
+    ReactGA.ga('set', 'checkProtocolTask', null);
     ReactGA.pageview(window.location.pathname + window.location.search);
   }, []);
-  
+
   return (
     <div className="ieo-app-content">
       <Header />
