@@ -86,7 +86,11 @@ const ImageEditorComponent = () => {
    * @param event - Click event
    */
   const onProcessClick = async (event: any) => {
+    // enable the spinner
     setProcessing(true);
+
+    // revoke object url of already existing file if there is any
+    if (finalFile) URL.revokeObjectURL(finalFile.preview);
 
     const formData = new FormData();
     if (selectedFile) formData.append("file", selectedFile?.file);
@@ -108,6 +112,8 @@ const ImageEditorComponent = () => {
     };
 
     setFinalFile(file);
+
+    // disable the spinner
     setProcessing(false);
   };
 
@@ -126,15 +132,17 @@ const ImageEditorComponent = () => {
         height: img.naturalHeight,
       };
 
-      // Revoke data uri after image is loaded
-      // URL.revokeObjectURL(finalFile.preview);
-
       setFinalFile(file);
     }
   };
   //#endregion
 
   //#region image params
+  /**
+   * Called when paper width input is changed
+   * 
+   * @param event - Input event
+   */
   const onPaperWidthChange = (event: any) => {
     const value = event.target.value;
 
@@ -142,6 +150,11 @@ const ImageEditorComponent = () => {
     setImgParams(param);
   };
 
+  /**
+   * Called when paper Height input is changed
+   * 
+   * @param event - Input event
+   */
   const onPaperHeightChange = (event: any) => {
     const value = event.target.value;
 
@@ -149,6 +162,12 @@ const ImageEditorComponent = () => {
     setImgParams(param);
   };
 
+  /**
+   * Called when color input is changed
+   * This has to be a valid hex color string (not quotes are needed)
+   * 
+   * @param event - Input event
+   */
   const onColorChange = (event: any) => {
     const value = event.target.value;
 
@@ -221,7 +240,7 @@ const ImageEditorComponent = () => {
           )}
         </div>
 
-        <div className="ieo-image-editor-edited-image-content">
+        <div className="ieo-image-editor-final-image-content">
           <div className="ieo-image-editor-title">Final Image</div>
           <div className="ieo-image-editor-final-actions">
             <Button

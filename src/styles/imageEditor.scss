@@ -87,7 +87,7 @@ $border-color: #222222;
       }
     }
 
-    & .ieo-image-editor-edited-image-content {
+    & .ieo-image-editor-final-image-content {
       @include image-container;
 
       flex: 2;
