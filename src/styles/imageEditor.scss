@@ -14,6 +14,8 @@ $border-color: #222222;
 
   font-size: 2rem;
 
+  white-space: nowrap;
+
   padding: 0.5rem 0;
 }
 // #endregion
@@ -25,14 +27,13 @@ $border-color: #222222;
   & .ieo-image-editor-images-area-wrapper {
     display: flex;
 
+    flex-wrap: wrap;
     justify-content: center;
 
     & .ieo-image-editor-original-image-content {
       @include image-container;
       flex: 1;
       flex-direction: column;
-
-      border-right: 0.1rem dashed $border-color;
 
       & .ieo-image-editor-title {
         @include title;
@@ -78,8 +79,6 @@ $border-color: #222222;
 
         padding: 1rem 5rem;
 
-        // background-color: $secondary-color;
-
         & img {
           display: flex;
           width: 100%;
@@ -90,7 +89,7 @@ $border-color: #222222;
     & .ieo-image-editor-final-image-content {
       @include image-container;
 
-      flex: 2;
+      flex: 2 1 0;
       flex-direction: column;
 
       & .ieo-image-editor-title {
@@ -107,19 +106,45 @@ $border-color: #222222;
       & .ieo-image-editor-final-params {
         display: flex;
         justify-content: center;
+        flex-wrap: wrap;
 
-        & > input {
-          background-color: rgba($color: #ffffff, $alpha: 0);
-          color: $text-color-light;
-
-          height: 2rem;
-
-          border-style: solid;
-          border-radius: 5pt;
-          border-color: $text-color-light;
-
-          padding: 0.5rem 1rem;
+        & .ieo-image-editor-final-param {
+          display: flex;
+          flex-basis: 0;
+          flex-wrap: wrap;
           margin: 0.5rem 1rem;
+
+          &.ieo-image-final-param-color-picker {
+            position: relative;
+
+            & > .ieo-image-editor-color-picker-popover {
+              position: absolute;
+
+              top: calc(100% + 1rem);
+            }
+          }
+
+          & > label {
+            width: fit-content;
+            padding-bottom: 0.5rem;
+
+            font-size: large;
+          }
+
+          & > input {
+            font-size: large;
+            background-color: rgba($color: #ffffff, $alpha: 0);
+            color: $text-color-light;
+
+            height: 2rem;
+            // width: fit-content;
+
+            border-style: solid;
+            border-radius: 5pt;
+            border-color: $text-color-light;
+
+            padding: 0.5rem 1rem;
+          }
         }
       }
 

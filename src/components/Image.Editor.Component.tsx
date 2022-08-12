@@ -1,12 +1,17 @@
+import { ChangeEvent, SyntheticEvent, useRef, useState } from "react";
+
 import { PhotoCamera } from "@mui/icons-material";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import { Button, CircularProgress, IconButton } from "@mui/material";
 
-import { ChangeEvent, SyntheticEvent, useState } from "react";
-import { post } from "../services/httpClient";
 import { Buffer } from "buffer";
 
+import { HexColorPicker } from "react-colorful";
+
+import { post } from "../services/httpClient";
+
 import "../styles/imageEditor.scss";
+import useClickOutside from "../services/hooks/useClickOutside";
 
 type FileInfo = {
   name: string;
@@ -22,14 +27,15 @@ const ImageEditorComponent = () => {
   const [selectedFile, setSelectedFile] = useState<FileInfo | null>(null);
   const [finalFile, setFinalFile] = useState<FileInfo | null>(null);
   const [processing, setProcessing] = useState<boolean>(false);
-  const [imgParams, setImgParams] = useState<
-    | {
-        paperWidth?: string;
-        paperHeight?: string;
-        color?: string;
-      }
-    | undefined
-  >(undefined);
+  const [imgParams, setImgParams] = useState<{
+    paperWidth?: string;
+    paperHeight?: string;
+    color?: string;
+  }>({ paperHeight: "4", paperWidth: "6", color: "#ffffff" });
+
+  const [isOpen, toggle] = useState<boolean>(false);
+
+  const popover = useRef<HTMLDivElement>(null);
 
   //#region original image
   /**
@@ -140,7 +146,7 @@ const ImageEditorComponent = () => {
   //#region image params
   /**
    * Called when paper width input is changed
-   * 
+   *
    * @param event - Input event
    */
   const onPaperWidthChange = (event: any) => {
@@ -152,7 +158,7 @@ const ImageEditorComponent = () => {
 
   /**
    * Called when paper Height input is changed
-   * 
+   *
    * @param event - Input event
    */
   const onPaperHeightChange = (event: any) => {
@@ -165,16 +171,43 @@ const ImageEditorComponent = () => {
   /**
    * Called when color input is changed
    * This has to be a valid hex color string (not quotes are needed)
-   * 
+   *
    * @param event - Input event
    */
-  const onColorChange = (event: any) => {
-    const value = event.target.value;
+  const onColorInputChange = (event: any) => {
+    const color = event.target.value;
+    updateColor(color);
+  };
 
-    const param = { ...imgParams, color: value };
+  /**
+   * Updates the color value
+   *
+   * @param color - Hex color string
+   */
+  const updateColor = (color: string) => {
+    const param = { ...imgParams, color };
     setImgParams(param);
   };
+  /**
+   * Opens the color picker popover
+   *
+   * @param event - Click event
+   */
+  const onColorInputClick = (event: any) => {
+    toggle(true);
+  };
+
+  /**
+   * Closes the color picker popover
+   */
+  const closePopover = () => {
+    toggle(false);
+  };
+
   //#endregion
+
+  useClickOutside(popover, closePopover);
+
   return (
     <div className="ieo-image-editor-wrapper">
       <div className="ieo-image-editor-images-area-wrapper">
@@ -218,14 +251,10 @@ const ImageEditorComponent = () => {
             <>
               <div className="ieo-image-editor-original-details">
                 <div className="ieo-image-editor-img-properties">
-                  <label>Resolution</label>
+                  <label>Resolution (h x w)</label>
                   <div>
                     {selectedFile.height} x {selectedFile.width}
                   </div>
-                </div>
-                <div className="ieo-image-editor-img-properties">
-                  <label>Name</label>
-                  <div>{selectedFile.name}</div>
                 </div>
               </div>
               <div className="ieo-image-editor-original-preview">
@@ -265,21 +294,42 @@ const ImageEditorComponent = () => {
             </IconButton>
           </div>
           <div className="ieo-image-editor-final-params">
-            <input
-              placeholder="Paper Width"
-              value={imgParams?.paperWidth}
-              onChange={onPaperWidthChange}
-            />
-            <input
-              placeholder="Paper Height"
-              value={imgParams?.paperHeight}
-              onChange={onPaperHeightChange}
-            />
-            <input
-              placeholder="Color"
-              value={imgParams?.color}
-              onChange={onColorChange}
-            />
+            <div className="ieo-image-editor-final-param">
+              <label>Paper Width (in/cm)</label>
+              <input
+                placeholder="Paper Width"
+                value={imgParams?.paperWidth}
+                onChange={onPaperWidthChange}
+              />
+            </div>
+            <div className="ieo-image-editor-final-param">
+              <label>Paper Height (in/cm)</label>
+              <input
+                placeholder="Paper Height"
+                value={imgParams?.paperHeight}
+                onChange={onPaperHeightChange}
+              />
+            </div>
+            <div
+              className="ieo-image-editor-final-param ieo-image-final-param-color-picker"
+              ref={popover}
+            >
+              <label>Color (hex value)</label>
+              {isOpen && (
+                <div className="ieo-image-editor-color-picker-popover">
+                  <HexColorPicker
+                    color={imgParams.color}
+                    onChange={updateColor}
+                  />
+                </div>
+              )}
+              <input
+                placeholder="Color"
+                value={imgParams?.color}
+                onClick={onColorInputClick}
+                onChange={onColorInputChange}
+              />
+            </div>
           </div>
           {processing ? (
             <div className="ieo-image-editor-final-spinner">
@@ -289,7 +339,7 @@ const ImageEditorComponent = () => {
             finalFile && (
               <>
                 <div className="ieo-image-editor-final-details">
-                  {`Resolution ${finalFile.height} x ${finalFile.width}`}
+                  {`Resolution (h x w) ${finalFile.height} x ${finalFile.width}`}
                 </div>
                 <div className="ieo-image-editor-final-preview">
                   <img

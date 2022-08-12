@@ -1,19 +1,52 @@
 @import "./colors.scss";
 
+$header-height: 4rem;
+
 .ieo-app-header {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   text-align: center;
   align-items: center;
 
   width: 100%;
+  // max-height: $header-height;
   color: $text-color-light;
 
   box-shadow: 0px -2px 4px #8f8f8f;
 
-  letter-spacing: 0.1em;
-  word-spacing: 1em;
-
-  text-transform: uppercase;
   background-color: $secondary-color;
+
+  & .ieo-app-header-left {
+    display: flex;
+    flex: 1;
+
+    padding: 1rem;
+
+    & a {
+      & img {
+        display: flex;
+        flex-basis: 0;
+        max-height: Min($header-height, 48pt);
+      }
+    }
+  }
+
+  & .ieo-app-header-center {
+    display: flex;
+    flex: 10;
+    padding: 0 1rem;
+
+    letter-spacing: 0.1em;
+    word-spacing: 1em;
+
+    text-transform: uppercase;
+
+    justify-content: center;
+  }
+
+  & .ieo-app-header-right {
+    display: flex;
+    flex: 1;
+    padding: 1rem;
+  }
 }
