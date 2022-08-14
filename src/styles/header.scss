@@ -1,6 +1,6 @@
 @import "./colors.scss";
 
-$header-height: 4rem;
+$header-height: 4em;
 
 .ieo-app-header {
   display: flex;
@@ -20,7 +20,7 @@ $header-height: 4rem;
     display: flex;
     flex: 1;
 
-    padding: 1rem;
+    padding: 1em;
 
     & a {
       & img {
@@ -34,7 +34,7 @@ $header-height: 4rem;
   & .ieo-app-header-center {
     display: flex;
     flex: 10;
-    padding: 0 1rem;
+    padding: 0 1em;
 
     letter-spacing: 0.1em;
     word-spacing: 1em;

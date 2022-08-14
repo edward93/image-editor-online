@@ -19,5 +19,9 @@ code {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+
+  @media screen and (max-width: 500px){
+    font-size: x-small;
+  }
   // flex: 1;
 }
